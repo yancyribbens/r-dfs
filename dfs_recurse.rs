@@ -27,6 +27,8 @@ fn dfs_iter(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, ve
     let l = graph.len();
 
     // The stack will never be larger than the graph. 
+    // The efficency of s could be improved by using a fixed size array
+    // however, there is no push() nor pop() and so an index pointer is needed.
     let mut s: Vec<usize> = Vec::with_capacity(l);
     s.push(vertex);
 
