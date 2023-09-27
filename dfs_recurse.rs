@@ -2,19 +2,19 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 
 // Recursive depth first search.
-fn dfs(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, node: usize) {
-    // Check if the edge has been visited.
-    if !visited.contains(&node) {
-        println!("visit {}", node);
+fn dfs(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, vertex: usize) {
+    // Check if the vertex has been visited.
+    if !visited.contains(&vertex) {
+        println!("visit {}", vertex);
 
         // It hasn't been visited, so mark it as visited now.
-        visited.insert(node);
+        visited.insert(vertex);
 
         // Get all edges of this vertex.
-        let vertexs: &Vec<usize> = graph.get(&node).unwrap();
+        let edges: &Vec<usize> = graph.get(&vertex).unwrap();
 
         // For each child, visit.
-        for &v in vertexs {
+        for &v in edges {
 
             // Recusive call.
             dfs(visited, graph, v);
@@ -23,12 +23,12 @@ fn dfs(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, node: u
 }
 
 // Iterative depth first search.
-fn dfs_iter(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, node: usize) {
+fn dfs_iter(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, vertex: usize) {
     let l = graph.len();
 
     // The stack will never be larger than the graph. 
     let mut s: Vec<usize> = Vec::with_capacity(l);
-    s.push(node);
+    s.push(vertex);
 
     while !s.is_empty() {
         let v: usize = s.pop().unwrap();
@@ -41,10 +41,10 @@ fn dfs_iter(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, no
             visited.insert(v);
 
             // Get all edges of this vertex.
-            let vertexs: &Vec<usize> = graph.get(&v).unwrap();
+            let edges: &Vec<usize> = graph.get(&v).unwrap();
 
-            for &edge in vertexs {
-                s.push(edge);
+            for &v in edges {
+                s.push(v);
             }
         }
     }
@@ -63,14 +63,14 @@ fn main() {
         (8 , vec![])
     ]);
 
+    let l = graph.len();
+
     // Start DFS at the root node 5.
-    // Set of visited (no duplicates).
-    let mut visited: HashSet<usize> = HashSet::new();
-    println!("start dfs recursive version");
+    // Set of visited (no duplicates)
+    let mut visited: HashSet<usize> = HashSet::with_capacity(l);
     dfs(&mut visited, &mut graph, 5);
 
     // Set of visited (no duplicates).
-    let mut visited: HashSet<usize> = HashSet::new();
-    println!("start dfs iterative version");
+    let mut visited: HashSet<usize> = HashSet::with_capacity(l);
     dfs_iter(&mut visited, &mut graph, 5);
 }
