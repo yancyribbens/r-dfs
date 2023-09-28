@@ -22,6 +22,39 @@ fn dfs(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, vertex:
     }
 }
 
+// If the input is a tree and not a graph (without cycles), then
+// the solution becomes simpler since there is no need to maintain
+// a visitied list.
+
+fn dfs_tree(tree: &HashMap<usize, Vec<usize>>, root: usize) {
+    println!("visit {}", root);
+
+    let branches: &Vec<usize> = tree.get(&root).unwrap();
+
+    for &node in branches {
+
+        dfs_tree(tree, node);
+    }
+}
+
+fn dfs_tree_iter(tree: &HashMap<usize, Vec<usize>>, root: usize) {
+    let mut s = Vec::new();
+
+    s.push(root);
+
+    while !s.is_empty() {
+        let n = s.pop().unwrap();
+
+        println!("visit {}", n);
+
+        let branches = tree.get(&n).unwrap();
+
+        for &n in branches {
+            s.push(n);
+        }
+    }
+}
+
 // Iterative depth first search.
 fn dfs_iter(visited: &mut HashSet<usize>, graph: &HashMap<usize, Vec<usize>>, vertex: usize) {
     let l = graph.len();
@@ -61,18 +94,21 @@ fn main() {
         (3 , vec![2, 4]),
         (7 , vec![8]),
         (2 , vec![]),
-        (4 , vec![8]),
+        (4 , vec![]),
         (8 , vec![])
     ]);
 
-    let l = graph.len();
+    //let l = graph.len();
+
+    //let mut visited: HashSet<usize> = HashSet::with_capacity(l);
+    dfs_tree_iter(&mut graph, 5);
 
     // Start DFS at the root node 5.
     // Set of visited (no duplicates)
-    let mut visited: HashSet<usize> = HashSet::with_capacity(l);
-    dfs(&mut visited, &mut graph, 5);
+    //let mut visited: HashSet<usize> = HashSet::with_capacity(l);
+    //dfs(&mut visited, &mut graph, 5);
 
     // Set of visited (no duplicates).
-    let mut visited: HashSet<usize> = HashSet::with_capacity(l);
-    dfs_iter(&mut visited, &mut graph, 5);
+    //let mut visited: HashSet<usize> = HashSet::with_capacity(l);
+    //dfs_iter(&mut visited, &mut graph, 5);
 }
